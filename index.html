@@ -29,7 +29,9 @@
 
 
             chart = new dimple.chart(svg, data);
-            chart.addCategoryAxis("x", ["Month"]);
+            x_axis = chart.addCategoryAxis("x", ["Month"]);
+            x_axis.addOrderRule(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
             chart.addPctAxis("y", ["Minutes"]);
             chart.addSeries("Delay", dimple.plot.bar);
             chart.draw();
