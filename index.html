@@ -34,6 +34,7 @@
 
 </head>
 <body>
+    <h1 style="text-align:center">Delayed minutes on flight proportion</h1>
     <div id="container">
 
     </div>
@@ -43,25 +44,14 @@
         <div style="width:150px;float:left">
             <button id="prev_button" class="btn">PREV</button>
         </div>
-        <div id="year_div" style="width:90px;float:left;font-size:30px">1999</div>
+        <div id="year_div" style="width:90px;float:left;font-size:30px">1995</div>
         <button id="next_button" style="float:left" class="btn">NEXT</button>
     </div>
 
   <script type="text/javascript">
-    //var svg = dimple.newSvg("body", 800, 600);
-    //var data = [
-    //  { "Word":"Hello", "Awesomeness":2000 },
-    //  { "Word":"World", "Awesomeness":3000 }
-    //];
-    //var chart = new dimple.chart(svg, data);
-    //chart.addCategoryAxis("x", "Word");
-    //chart.addMeasureAxis("y", "Awesomeness");
-    //chart.addSeries(null, dimple.plot.bar);
-    //chart.draw();
-
 
     var svg = dimple.newSvg("#container", 1800, 650);
-    var curr_year = 1999
+    var curr_year = 1995
     d3.csv("data/final_data.csv", function(d){
         var draw_chart = function() {
             data = d.filter(function(x){return x['Year'] == String(curr_year)});
@@ -77,6 +67,7 @@
             x_axis.fontSize = 20;
             y_axis = chart.addPctAxis("y", ["Minutes"]);
             y_axis.fontSize = 20;
+            y_axis.title = 'Delay';
             s = chart.addSeries("Delay", dimple.plot.bar);
             s.addEventHandler("mouseover", function(){});
             chart.draw();
@@ -106,33 +97,5 @@
 
     })
 
-    // var svg = dimple.newSvg("body", 2024, 760);
-    // d3.csv("data/data2.csv", function(d){
-    //     var curr_year = 2006;
-    //     data = d.filter(function(x){return x['Origin'] == 'WA' && x['Year'] == String(curr_year)});
-    //     for(i=0;i<data.length;i++){
-    //         data[i]['Count'] = +data[i]['Count']
-    //     }
-    //     console.log(data[10])
-
-    //     chart = new dimple.chart(svg, data);
-    //     chart.addCategoryAxis("x", ["Destination"]);
-    //     chart.addLogAxis("y", ["Count"]);
-    //     var s = chart.addSeries(null, dimple.plot.bar);
-    //     chart.draw();
-
-
-    //     d3.select('#next_button').on("click", function() {
-    //         curr_year = curr_year + 1;
-    //         chart.data = d.filter(function(x){return x['Origin'] == 'WA' && x['Year'] == String(curr_year)});
-    //         chart.draw()
-    //     })
-
-    //     d3.select('#prev_button').on("click", function() {
-    //         curr_year = curr_year - 1;
-    //         chart.data = d.filter(function(x){return x['Origin'] == 'WA' && x['Year'] == String(curr_year)});
-    //         chart.draw()
-    //     })
-    // })
   </script>
 </body>
