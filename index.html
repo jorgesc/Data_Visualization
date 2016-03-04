@@ -34,7 +34,7 @@
 
 </head>
 <body>
-    <h1 style="text-align:center">Delayed minutes on flight proportion</h1>
+    <h1 style="text-align:center">Delayed time proportion</h1>
     <div id="container">
 
     </div>
@@ -53,8 +53,11 @@
     var svg = dimple.newSvg("#container", 1800, 650);
     var curr_year = 1995
     d3.csv("data/final_data.csv", function(d){
+
         var draw_chart = function() {
+            // Put together all the code to draw the chart the first time
             data = d.filter(function(x){return x['Year'] == String(curr_year)});
+
             console.log(curr_year);
             console.log(data[0]);
 
@@ -69,13 +72,14 @@
             y_axis.fontSize = 20;
             y_axis.title = 'Delay';
             s = chart.addSeries("Delay", dimple.plot.bar);
-            s.addEventHandler("mouseover", function(){});
+            s.addEventHandler("mouseover", function(){}); // Remove mouseover
             chart.draw();
         }
 
         draw_chart()
 
         redraw = function() {
+            // Draw again the chart. Needs the current chart to exists
             data = d.filter(function(x){return x['Year'] == String(curr_year)});
             d3.select('#year_div').text(curr_year);
             chart.data = data;
@@ -84,12 +88,14 @@
 
 
         d3.select('#next_button').on('click', function() {
+            // Next button press, one more year
             curr_year = Math.min(2008, curr_year + 1);
             redraw();
 
         })
 
         d3.select('#prev_button').on('click', function() {
+            // Prev button press, one less year
             curr_year = Math.max(1995, curr_year - 1);
             redraw()
 
