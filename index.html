@@ -46,7 +46,8 @@
             x_axis.fontSize = 20;
             y_axis = chart.addPctAxis("y", ["Minutes"]);
             y_axis.fontSize = 20;
-            chart.addSeries("Delay", dimple.plot.bar);
+            s = chart.addSeries("Delay", dimple.plot.bar);
+            s.addEventHandler("mouseover", function(){});
             chart.draw();
         }
 
