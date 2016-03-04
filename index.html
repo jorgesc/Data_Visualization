@@ -30,7 +30,7 @@
     //chart.draw();
 
 
-    var svg = dimple.newSvg("body", 2024, 760);
+    var svg = dimple.newSvg("body", 2024, 860);
     var curr_year = 1999
     d3.csv("data/final_data.csv", function(d){
         var draw_chart = function() {
@@ -43,7 +43,9 @@
             x_axis = chart.addCategoryAxis("x", ["Month"]);
             x_axis.addOrderRule(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
-            chart.addPctAxis("y", ["Minutes"]);
+            x_axis.fontSize = 20;
+            y_axis = chart.addPctAxis("y", ["Minutes"]);
+            y_axis.fontSize = 20;
             chart.addSeries("Delay", dimple.plot.bar);
             chart.draw();
         }
