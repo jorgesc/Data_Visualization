@@ -4,8 +4,9 @@
   <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
 </head>
 <body>
-  <button id="next_button">NEXT</button>
   <button id="prev_button">PREV</button>
+  <button id="next_button">NEXT</button>
+  <div id="year_div"></div>
   <script type="text/javascript">
     //var svg = dimple.newSvg("body", 800, 600);
     //var data = [
@@ -44,6 +45,7 @@
         redraw = function() {
             data = d.filter(function(x){return x['Year'] == String(curr_year)});
             chart.data = data;
+            d3.select('#year_div').text(curr_year);
             chart.draw()
         }
 
