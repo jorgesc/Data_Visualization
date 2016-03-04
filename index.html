@@ -2,11 +2,21 @@
   <meta charset='utf-8'>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+  <style>
+  .bold {
+    font-size:30px;
+  }
+
+  </style>
+
+
 </head>
 <body>
-  <button id="prev_button">PREV</button>
-  <button id="next_button">NEXT</button>
-  <div id="year_div"></div>
+  <button id="prev_button" style="float:left">PREV</button>
+  <div id="year_div" style="font-size:24;float:left"> </div>
+  <button id="next_button" style="float:left">NEXT</button>
+
+
   <script type="text/javascript">
     //var svg = dimple.newSvg("body", 800, 600);
     //var data = [
@@ -44,10 +54,11 @@
 
         redraw = function() {
             data = d.filter(function(x){return x['Year'] == String(curr_year)});
-            chart.data = data;
             d3.select('#year_div').text(curr_year);
-            chart.draw()
+            chart.data = data;
+            chart.draw();
         }
+
 
         d3.select('#next_button').on('click', function() {
             curr_year = Math.min(2008, curr_year + 1);
