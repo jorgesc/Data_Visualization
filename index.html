@@ -77,7 +77,32 @@
             y_axis.title = 'Delay';
             s = chart.addSeries("Delay", dimple.plot.bar);
             s.addEventHandler("mouseover", function(){}); // Remove mouseover
+
+            var rect1 = svg.append("rect").attr("x", 1500)
+                                          .attr("y", 80)
+                                          .attr("height", 16)
+                                          .attr("width", 20)
+                                          .attr('fill', "rgb(251, 128, 114)");
+
+            var rect2 = svg.append("rect").attr("x", 1500)
+                                          .attr("y", 120)
+                                          .attr("height", 16)
+                                          .attr("width", 20)
+                                          .attr('fill', "rgb(128, 177, 211)");
+
+            var text1 = svg.append("text").attr("x", 1534)
+                                          .attr("y", 94)
+                                          .attr("font-size", 20)
+                                          .text("Delayed");
+
+
+            var text2 = svg.append("text").attr("x", 1534)
+                                          .attr("y", 134)
+                                          .attr("font-size", 20)
+                                          .text("On Time");
+
             chart.draw();
+
         }
 
         draw_chart()
@@ -102,17 +127,18 @@
 
         d3.select('#next_button').on('click', function() {
             // Next button press, one more year
-            console.log(curr_year);
             next_year();
 
         })
 
         d3.select('#prev_button').on('click', function() {
             // Prev button press, one less year
-            console.log(curr_year);
             last_year();
 
         })
+
+
+        // TIMER FUNCTIONS
 
         var last_time = 0;
         var playing = false;
@@ -141,6 +167,8 @@
             curr_year = 1995;
             redraw();
         })
+
+
 
     })
 
