@@ -40,15 +40,18 @@
     </div>
 
     <div style="margin-left:890px;font-size:40px;">Year</div>
-    <div style="margin-left:760px;float:center">
+    <div style="margin-left:660px;float:center">
+        <button id="play_button" style="float:left" class="btn">PLAY</button>
         <div style="width:150px;float:left">
             <button id="prev_button" class="btn">PREV</button>
         </div>
         <div id="year_div" style="width:90px;float:left;font-size:30px">1995</div>
         <button id="next_button" style="float:left" class="btn">NEXT</button>
+        <button id="reset_button" style="float:left" class="btn">RESET</button>
     </div>
 
   <script type="text/javascript">
+
 
     var svg = dimple.newSvg("#container", 1800, 650);
     var curr_year = 1995
@@ -86,19 +89,56 @@
             chart.draw();
         }
 
+        function next_year() {
+            curr_year = Math.min(2008, curr_year + 1);
+            redraw();
+        }
+
+        function last_year() {
+            curr_year = Math.max(1995, curr_year - 1);
+            redraw()
+        }
 
         d3.select('#next_button').on('click', function() {
             // Next button press, one more year
-            curr_year = Math.min(2008, curr_year + 1);
-            redraw();
+            console.log(curr_year);
+            next_year();
 
         })
 
         d3.select('#prev_button').on('click', function() {
             // Prev button press, one less year
-            curr_year = Math.max(1995, curr_year - 1);
-            redraw()
+            console.log(curr_year);
+            last_year();
 
+        })
+
+        var last_time = 0;
+        var playing = false;
+        function timer_function(elapsed) {
+            if (elapsed - last_time > 1000){
+                if (playing){
+                    next_year()
+                    last_time = elapsed;
+                }
+            }
+        }
+        d3.timer(timer_function);
+
+        d3.select('#play_button').on('click', function() {
+            if (playing){
+                playing = false;
+                d3.select('#play_button').text("PLAY")
+            } else {
+                playing = true;
+                d3.select('#play_button').text("STOP")
+            }
+
+        })
+
+        d3.select('#reset_button').on('click', function() {
+            curr_year = 1995;
+            redraw();
         })
 
     })
