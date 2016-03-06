@@ -1,0 +1,107 @@
+<head>
+  <meta charset='utf-8'>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+  <style>
+      .btn {
+        background: #3498db;
+        background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+        background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+        background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+        background-image: -o-linear-gradient(top, #3498db, #2980b9);
+        background-image: linear-gradient(to bottom, #3498db, #2980b9);
+        -webkit-border-radius: 4;
+        -moz-border-radius: 4;
+        border-radius: 4px;
+        font-family: Arial;
+        color: #ffffff;
+        font-size: 20px;
+        padding: 5px 20px 5px 20px;
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        background: #3cb0fd;
+        background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+        text-decoration: none;
+      }
+  </style>
+
+
+</head>
+<body>
+    <h1 style="text-align:center">Delayed time proportion</h1>
+    <div id="container">
+
+    </div>
+
+    <div style="margin-left:890px;font-size:40px;">Year</div>
+    <div style="margin-left:760px;float:center">
+        <div style="width:150px;float:left">
+            <button id="prev_button" class="btn">PREV</button>
+        </div>
+        <div id="year_div" style="width:90px;float:left;font-size:30px">1995</div>
+        <button id="next_button" style="float:left" class="btn">NEXT</button>
+    </div>
+
+  <script type="text/javascript">
+
+    var svg = dimple.newSvg("#container", 1800, 650);
+    var curr_year = 1995
+    d3.csv("../data/final_data.csv", function(d){
+
+        var draw_chart = function() {
+            // Put together all the code to draw the chart the first time
+            data = d.filter(function(x){return x['Year'] == String(curr_year)});
+
+            console.log(curr_year);
+            console.log(data[0]);
+
+
+            chart = new dimple.chart(svg, data);
+            x_axis = chart.addCategoryAxis("x", ["Month"]);
+            x_axis.title = '';
+            x_axis.addOrderRule(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
+            x_axis.fontSize = 20;
+            y_axis = chart.addPctAxis("y", ["Minutes"]);
+            y_axis.fontSize = 20;
+            y_axis.title = 'Delay';
+            s = chart.addSeries("Delay", dimple.plot.bar);
+            s.addEventHandler("mouseover", function(){}); // Remove mouseover
+            chart.draw();
+        }
+
+        draw_chart()
+
+        redraw = function() {
+            // Draw again the chart. Needs the current chart to exists
+            data = d.filter(function(x){return x['Year'] == String(curr_year)});
+            d3.select('#year_div').text(curr_year);
+            chart.data = data;
+            chart.draw();
+        }
+
+
+        d3.select('#next_button').on('click', function() {
+            // Next button press, one more year
+            curr_year = Math.min(2008, curr_year + 1);
+            redraw();
+
+        })
+
+        d3.select('#prev_button').on('click', function() {
+            // Prev button press, one less year
+            curr_year = Math.max(1995, curr_year - 1);
+            redraw()
+
+        })
+
+    })
+
+  </script>
+</body>
