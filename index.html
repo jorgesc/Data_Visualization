@@ -62,11 +62,8 @@
             // Put together all the code to draw the chart the first time
             data = d.filter(function(x){return x['Year'] == String(curr_year)});
 
-            console.log(curr_year);
-            console.log(data[0]);
-
-
             chart = new dimple.chart(svg, data);
+            chart.width = 1200;
             x_axis = chart.addCategoryAxis("x", ["Month"]);
             x_axis.title = '';
             x_axis.addOrderRule(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -76,33 +73,68 @@
             y_axis.fontSize = 20;
             y_axis.title = 'Delay';
             s = chart.addSeries("Delay", dimple.plot.bar);
-            s.addEventHandler("mouseover", function(){}); // Remove mouseover
 
-            var rect1 = svg.append("rect").attr("x", 1500)
+            s.addEventHandler("mouseover", function(e){
+                // When hovering bars show the percent on the legend
+                height = e.selectedShape.data()[0].height;
+                if (e.selectedShape.attr("fill") == "#80B1D3"){
+                    change_ontime_percent(height);
+                    change_delayed_percent(1 - height);
+                } else {
+                    change_delayed_percent(height);
+                    change_ontime_percent(1 - height);
+                }
+            });
+
+            s.addEventHandler("mouseleave", function(e) {
+                // Stop showing percent when leaving hover
+                change_delayed_percent("");
+                change_ontime_percent("");
+            })
+
+            // LEGEND
+
+            var rect1 = svg.append("rect").attr("x", 1400)
                                           .attr("y", 80)
                                           .attr("height", 16)
                                           .attr("width", 20)
                                           .attr('fill', "rgb(251, 128, 114)");
 
-            var rect2 = svg.append("rect").attr("x", 1500)
+            var rect2 = svg.append("rect").attr("x", 1400)
                                           .attr("y", 120)
                                           .attr("height", 16)
                                           .attr("width", 20)
                                           .attr('fill', "rgb(128, 177, 211)");
 
-            var text1 = svg.append("text").attr("x", 1534)
+            var text1 = svg.append("text").attr("x", 1434)
                                           .attr("y", 94)
                                           .attr("font-size", 20)
                                           .text("Delayed");
 
 
-            var text2 = svg.append("text").attr("x", 1534)
+            var text2 = svg.append("text").attr("x", 1434)
                                           .attr("y", 134)
                                           .attr("font-size", 20)
                                           .text("On Time");
 
-            chart.draw();
+            function change_legend(text_container, percent, text){
+                // Change the text of the legend to show the percents
+                if (percent == ""){
+                    text_container.text(text)
+                } else {
+                    output = Math.round(percent * 10000) / 100;
+                    text_container.text(text + ': ' + output + "%" )
+                }
+            }
 
+            function change_delayed_percent(percent){
+                change_legend(text1, percent, "Delayed");
+            }
+            function change_ontime_percent(percent){
+                change_legend(text2, percent, "On Time");
+            }
+
+            chart.draw();
         }
 
         draw_chart()
@@ -128,13 +160,11 @@
         d3.select('#next_button').on('click', function() {
             // Next button press, one more year
             next_year();
-
         })
 
         d3.select('#prev_button').on('click', function() {
             // Prev button press, one less year
             last_year();
-
         })
 
 
@@ -160,15 +190,12 @@
                 playing = true;
                 d3.select('#play_button').text("STOP")
             }
-
         })
 
         d3.select('#reset_button').on('click', function() {
             curr_year = 1995;
             redraw();
         })
-
-
 
     })
 
